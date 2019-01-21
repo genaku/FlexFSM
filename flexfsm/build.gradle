@@ -2,6 +2,9 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 apply plugin: 'java-library'
+apply plugin: 'maven'
+
+group='com.github.genaku'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"

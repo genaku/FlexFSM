@@ -2,7 +2,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 apply plugin: 'java-library'
-apply plugin: 'maven'
+apply plugin: 'com.github.dcendents.android-maven'
 
 group='com.github.genaku'
 

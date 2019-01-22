@@ -2,8 +2,8 @@ package com.genaku.flexfsm
 
 import java.util.*
 
-open class ObservableFSM<STATE_ID : Enum<*>, EVENT>(vararg statesArray: State<STATE_ID, EVENT>) :
-    FSM<STATE_ID, EVENT>(*statesArray) {
+open class ObservableFSM<STATE_ID : Enum<*>, EVENT>(states: List<State<STATE_ID, EVENT>>) :
+    FSM<STATE_ID, EVENT>(states) {
 
     private val observers = HashMap<FsmObserver, EnumSet<FSM.FsmEvent>>(1)
 

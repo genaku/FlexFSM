@@ -2,7 +2,7 @@ package com.genaku.flexfsm
 
 import java.util.*
 
-class LoggedFSM<STATE_ID : Enum<*>, EVENT> : ObservableFSM<STATE_ID, EVENT> {
+class LoggedFSM<STATE_ID : Enum<*>, EVENT>(val name: String, states: List<State<STATE_ID, EVENT>>) : ObservableFSM<STATE_ID, EVENT>(states) {
 
     // {{ Properties
 
@@ -12,11 +12,6 @@ class LoggedFSM<STATE_ID : Enum<*>, EVENT> : ObservableFSM<STATE_ID, EVENT> {
     private var logHandler: LogHandler? = null
 
     private var logMsg: String = ""
-
-    var name: String? = ""
-        set(name) {
-            field = if (name.isNullOrEmpty()) "A" else name
-        }
 
     fun setLoggedEvents(vararg loggedEvents: FSM.FsmEvent) {
         this.loggedEvents.clear()
@@ -59,12 +54,6 @@ class LoggedFSM<STATE_ID : Enum<*>, EVENT> : ObservableFSM<STATE_ID, EVENT> {
     }
 
     // }}
-
-    constructor(vararg statesArray: State<STATE_ID, EVENT>) : super(*statesArray) {}
-
-    constructor(name: String, vararg statesArray: State<STATE_ID, EVENT>) : super(*statesArray) {
-        this.name = name
-    }
 
     override fun onFSMEvent(fsmEvent: FSM.FsmEvent, state: State<STATE_ID, EVENT>?) {
         val logBuilder = StringBuilder()

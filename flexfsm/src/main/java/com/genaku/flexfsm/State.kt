@@ -29,9 +29,8 @@ open class State<STATE_ID : Enum<*>, EVENT>(open var id: STATE_ID?) : IState {
 
     // }}
 
-    fun event(): EVENT? {
-        return fsm.event
-    }
+    val event: EVENT?
+        get() = fsm.event
 
     fun next(nextStateId: STATE_ID) {
         this.nextStateId = nextStateId

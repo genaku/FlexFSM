@@ -2,7 +2,7 @@ package com.genaku.flexfsm
 
 import java.util.*
 
-open class FSM<STATE_ID : Enum<*>, EVENT>(vararg statesArray: State<STATE_ID, EVENT>) {
+open class FSM<STATE_ID : Enum<*>, EVENT>(states: List<State<STATE_ID, EVENT>>) {
 
     var event: EVENT? = null
 
@@ -16,20 +16,20 @@ open class FSM<STATE_ID : Enum<*>, EVENT>(vararg statesArray: State<STATE_ID, EV
     private val stateGroups = ArrayList<StateGroup<STATE_ID, EVENT>>(0)
 
     init {
-        init(*statesArray)
+        setup(states)
         start()
     }
 
-    protected fun init(vararg statesArray: State<STATE_ID, EVENT>) {
+    protected fun setup(states: List<State<STATE_ID, EVENT>>) {
         onBeforeInit()
-        for (state in statesArray) {
+        for (state in states) {
             addState(state)
         }
 
         for (superState in stateGroups) {
             for (stateId in superState.includedIDs) {
                 val state = getState(stateId)
-                    ?: throw FSMException("Unconfigured state [$stateId] was included into superstate")
+                    ?: throw FSMException("Unconfigured state [$stateId] was included into state group")
                 state.addStateGroup(superState)
             }
         }

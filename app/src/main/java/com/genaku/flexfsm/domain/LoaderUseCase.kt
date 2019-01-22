@@ -3,6 +3,8 @@ package com.genaku.flexfsm.domain
 import com.genaku.flexfsm.FSM
 import com.genaku.flexfsm.ObservableFSM
 import com.genaku.flexfsm.State
+import com.genaku.flexfsm.domain.model.IProgressState
+import com.genaku.flexfsm.domain.model.LoaderFSM
 
 class LoaderUseCase(
     private val presenter: ILoaderPresenter,

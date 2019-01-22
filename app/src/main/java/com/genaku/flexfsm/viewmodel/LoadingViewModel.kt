@@ -1,32 +1,39 @@
 package com.genaku.flexfsm.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.genaku.flexfsm.domain.ILoaderInteractor
 import com.genaku.flexfsm.domain.ILoaderPresenter
 import com.genaku.flexfsm.domain.IRepository
 import com.genaku.flexfsm.domain.LoaderUseCase
+import com.genaku.flexfsm.interactor.LoaderInteractor
 
-class LoadingViewModel(repository: IRepository): ViewModel(), ILoaderPresenter {
+class LoadingViewModel(repository: IRepository) : ViewModel(), ILoaderPresenter {
+
+    val progressEvent = MutableLiveData<String>()
+    val dataEvent = MutableLiveData<String>()
+    val hideEvent = MutableLiveData<Boolean>()
 
     private val useCase = LoaderUseCase(
         presenter = this,
         repository = repository
     )
 
-    val interactor: ILoaderInteractor = useCase
+    val interactor: ILoaderInteractor = LoaderInteractor(useCase)
 
     override fun init() {
+        dataEvent.postValue("start")
     }
 
     override fun hide() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        hideEvent.postValue(true)
     }
 
     override fun show(data: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        dataEvent.postValue(data)
     }
 
     override fun showProgress(current: Int, total: Int, description: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressEvent.postValue("Progress: $current/$total $description")
     }
 }

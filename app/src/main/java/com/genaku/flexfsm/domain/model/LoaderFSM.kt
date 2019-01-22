@@ -1,5 +1,6 @@
-package com.genaku.flexfsm.domain
+package com.genaku.flexfsm.domain.model
 
+import android.util.Log
 import com.genaku.flexfsm.FSMBuilder
 import com.genaku.flexfsm.State
 import com.genaku.flexfsm.StateGroup
@@ -25,6 +26,7 @@ class LoaderFSM(
             States.INIT
         ) {
             override fun enter() {
+                Log.d("T", "state: init")
                 init()
                 next(States.HIDE)
             }
@@ -34,12 +36,15 @@ class LoaderFSM(
             "Configuration loading..."
         ) {
             override fun enter() {
+                Log.d("T", "state: load config")
                 loadConfig()
             }
 
             override fun handleEvent() {
-                if (event == Events.CONFIG_LOADED) {
-                    next(States.LOAD_DATA)
+                when (event) {
+                    Events.CONFIG_LOADED -> next(States.LOAD_DATA)
+                    Events.HIDE -> next(States.INIT)
+                    else -> {}
                 }
             }
         })
@@ -48,12 +53,15 @@ class LoaderFSM(
             "Data loading..."
         ) {
             override fun enter() {
+                Log.d("T", "state: load data")
                 loadData()
             }
 
             override fun handleEvent() {
-                if (event == Events.DATA_LOADED) {
-                    next(States.SHOW)
+                when (event) {
+                    Events.DATA_LOADED -> next(States.SHOW)
+                    Events.HIDE -> next(States.INIT)
+                    else -> {}
                 }
             }
         })
@@ -61,13 +69,20 @@ class LoaderFSM(
             States.SHOW
         ) {
             override fun enter() {
+                Log.d("T", "state: show")
                 showData()
+            }
+            override fun handleEvent() {
+                if (event == Events.SHOW) {
+                    next(States.LOAD_CONFIG)
+                }
             }
         })
         .add(object : State<States, Events>(
             States.HIDE
         ) {
             override fun enter() {
+                Log.d("T", "state: hide")
                 hide()
             }
 

@@ -1,4 +1,4 @@
-package com.genaku.flexfsm.domain
+package com.genaku.flexfsm.domain.model
 
 import com.genaku.flexfsm.IState
 

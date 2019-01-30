@@ -4,21 +4,46 @@ import java.util.*
 
 open class FSM<STATE_ID : Enum<*>, EVENT>(states: List<State<STATE_ID, EVENT>>) {
 
+    @Volatile
     var event: EVENT? = null
 
+    @Volatile
     var currentState: State<STATE_ID, EVENT>? = null
 
+    @Volatile
     protected var nextState: State<STATE_ID, EVENT>? = null
 
+    @Volatile
     protected var prevState: State<STATE_ID, EVENT>? = null
 
     private val states = HashMap<STATE_ID, State<STATE_ID, EVENT>>()
     private val stateGroups = ArrayList<StateGroup<STATE_ID, EVENT>>(0)
 
+    private val lock = Any()
+
     init {
         setup(states)
         start()
     }
+
+    fun getState(stateId: STATE_ID): State<STATE_ID, EVENT>? = states[stateId]
+
+    fun handleEvent(event: EVENT) = synchronized(lock) {
+        this.event = event
+        handleEvent()
+    }
+
+    fun handleEvent() = synchronized(lock) {
+        onBeforeHandleEvent()
+
+        handleState()
+        doTransition()
+
+        onAfterHandleEvent()
+        this.event = null
+    }
+
+    override fun toString(): String = currentState.toString()
 
     protected fun setup(states: List<State<STATE_ID, EVENT>>) {
         onBeforeInit()
@@ -35,8 +60,6 @@ open class FSM<STATE_ID : Enum<*>, EVENT>(states: List<State<STATE_ID, EVENT>>) 
         }
         onAfterInit()
     }
-
-    fun getState(stateId: STATE_ID): State<STATE_ID, EVENT>? = states[stateId]
 
     protected fun addState(state: State<STATE_ID, EVENT>) {
         state.fsm = this
@@ -55,24 +78,9 @@ open class FSM<STATE_ID : Enum<*>, EVENT>(states: List<State<STATE_ID, EVENT>>) 
         }
     }
 
-    protected fun start() {
+    protected fun start() = synchronized(lock) {
         enterState()
         doTransition()
-    }
-
-    fun handleEvent(event: EVENT) {
-        this.event = event
-        handleEvent()
-    }
-
-    fun handleEvent() {
-        onBeforeHandleEvent()
-
-        handleState()
-        doTransition()
-
-        onAfterHandleEvent()
-        this.event = null
     }
 
     protected fun doTransition() {
@@ -162,8 +170,6 @@ open class FSM<STATE_ID : Enum<*>, EVENT>(states: List<State<STATE_ID, EVENT>>) 
             }
         }
     }
-
-    override fun toString(): String = currentState.toString()
 
 // {{ Event hooks
 

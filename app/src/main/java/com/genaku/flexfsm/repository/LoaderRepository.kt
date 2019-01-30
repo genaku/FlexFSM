@@ -1,8 +1,8 @@
 package com.genaku.flexfsm.repository
 
-import com.genaku.flexfsm.domain.IRepository
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderRepository
 
-class Repository: IRepository {
+class LoaderRepository: ILoaderRepository {
     override fun loadConfig(): String {
         Thread.sleep(5000)
         return "config"

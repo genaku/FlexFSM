@@ -33,6 +33,7 @@ dependencies {
     //    implementation 'com.github.genaku:FlexFSM:1.0.1'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'com.github.langara:USpek:0.0.2'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     testImplementation "io.mockk:mockk:1.9.kotlin12"

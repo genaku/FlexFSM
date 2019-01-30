@@ -1,4 +1,4 @@
-package com.genaku.flexfsm.domain
+package com.genaku.flexfsm.domain.loader.interfaces
 
 interface ILoaderInteractor {
     fun startLoad()

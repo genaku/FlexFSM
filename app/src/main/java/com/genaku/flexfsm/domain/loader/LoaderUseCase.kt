@@ -1,14 +1,17 @@
-package com.genaku.flexfsm.domain
+package com.genaku.flexfsm.domain.loader
 
 import com.genaku.flexfsm.FSM
 import com.genaku.flexfsm.ObservableFSM
 import com.genaku.flexfsm.State
-import com.genaku.flexfsm.domain.model.IProgressState
-import com.genaku.flexfsm.domain.model.LoaderFSM
+import com.genaku.flexfsm.domain.RepoException
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderInteractor
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderPresenter
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderRepository
+import com.genaku.flexfsm.domain.progress.IProgressState
 
 class LoaderUseCase(
     private val presenter: ILoaderPresenter,
-    private val repository: IRepository
+    private val loaderRepository: ILoaderRepository
 ) : ILoaderInteractor, ObservableFSM.FsmObserver {
 
     private var config: String = ""
@@ -23,7 +26,7 @@ class LoaderUseCase(
         loaderFsm.handleEvent(LoaderFSM.Events.HIDE)
     }
 
-    val loaderFsm: ObservableFSM<LoaderFSM.States, LoaderFSM.Events>
+    private val loaderFsm: ObservableFSM<LoaderFSM.States, LoaderFSM.Events>
 
     init {
         loaderFsm = LoaderFSM(
@@ -44,7 +47,7 @@ class LoaderUseCase(
 
     private fun loadConfig() {
         try {
-            config = repository.loadConfig()
+            config = loaderRepository.loadConfig()
             loaderFsm.handleEvent(LoaderFSM.Events.CONFIG_LOADED)
         } catch (e: RepoException) {
             loaderFsm.handleEvent(LoaderFSM.Events.FAILURE)
@@ -53,7 +56,7 @@ class LoaderUseCase(
 
     private fun loadData() {
         try {
-            data = repository.loadData(config)
+            data = loaderRepository.loadData(config)
             loaderFsm.handleEvent(LoaderFSM.Events.DATA_LOADED)
         } catch (e: RepoException) {
             loaderFsm.handleEvent(LoaderFSM.Events.FAILURE)

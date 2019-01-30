@@ -1,9 +1,9 @@
 package com.genaku.flexfsm
 
-import com.genaku.flexfsm.domain.ILoaderPresenter
-import com.genaku.flexfsm.domain.IRepository
-import com.genaku.flexfsm.domain.LoaderUseCase
 import com.genaku.flexfsm.domain.RepoException
+import com.genaku.flexfsm.domain.loader.LoaderUseCase
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderPresenter
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderRepository
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert
@@ -15,7 +15,7 @@ class LoaderTest {
 
     @Test
     fun shouldGoThroughWholeCycle() {
-        val repo = mockk<IRepository>()
+        val repo = mockk<ILoaderRepository>()
         every { repo.loadConfig() } returns ""
         every { repo.loadData("") } returns "data"
 
@@ -30,7 +30,7 @@ class LoaderTest {
 
     @Test
     fun shouldHideOnConfigurationLoad() {
-        val repo = mockk<IRepository>()
+        val repo = mockk<ILoaderRepository>()
         every { repo.loadConfig() } throws RepoException()
 
         presenter.init()
@@ -41,7 +41,7 @@ class LoaderTest {
 
     @Test
     fun shouldHideOnDataLoad() {
-        val repo = mockk<IRepository>()
+        val repo = mockk<ILoaderRepository>()
         every { repo.loadConfig() } returns ""
         every { repo.loadData("") } throws RepoException()
 

@@ -1,4 +1,4 @@
-package com.genaku.flexfsm.domain.model
+package com.genaku.flexfsm.domain.progress
 
 import com.genaku.flexfsm.IState
 

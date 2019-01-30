@@ -1,9 +1,9 @@
-package com.genaku.flexfsm.domain.model
+package com.genaku.flexfsm.domain.loader
 
-import android.util.Log
 import com.genaku.flexfsm.FSMBuilder
 import com.genaku.flexfsm.State
 import com.genaku.flexfsm.StateGroup
+import com.genaku.flexfsm.domain.progress.ProgressState
 
 class LoaderFSM(
     init: () -> Unit,
@@ -26,7 +26,6 @@ class LoaderFSM(
             States.INIT
         ) {
             override fun enter() {
-                Log.d("T", "state: init")
                 init()
                 next(States.HIDE)
             }
@@ -36,7 +35,6 @@ class LoaderFSM(
             "Configuration loading..."
         ) {
             override fun enter() {
-                Log.d("T", "state: load config")
                 loadConfig()
             }
 
@@ -53,7 +51,6 @@ class LoaderFSM(
             "Data loading..."
         ) {
             override fun enter() {
-                Log.d("T", "state: load data")
                 loadData()
             }
 
@@ -69,7 +66,6 @@ class LoaderFSM(
             States.SHOW
         ) {
             override fun enter() {
-                Log.d("T", "state: show")
                 showData()
             }
             override fun handleEvent() {
@@ -82,7 +78,6 @@ class LoaderFSM(
             States.HIDE
         ) {
             override fun enter() {
-                Log.d("T", "state: hide")
                 hide()
             }
 

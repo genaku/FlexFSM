@@ -1,6 +1,8 @@
-package com.genaku.flexfsm.domain
+package com.genaku.flexfsm.domain.loader.interfaces
 
-interface IRepository {
+import com.genaku.flexfsm.domain.RepoException
+
+interface ILoaderRepository {
     @Throws (RepoException::class)
     fun loadConfig(): String
 

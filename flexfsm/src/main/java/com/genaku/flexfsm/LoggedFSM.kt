@@ -13,15 +13,15 @@ class LoggedFSM<STATE_ID : Enum<*>, EVENT>(val name: String, states: List<State<
 
     private var logMsg: String = ""
 
-    fun setLoggedEvents(vararg loggedEvents: FSM.FsmEvent) {
-        this.loggedEvents.clear()
-        for (event in loggedEvents) {
-            this.loggedEvents.add(event)
+    fun setLoggedEvents(vararg logEvents: FSM.FsmEvent) {
+        loggedEvents.clear()
+        for (event in logEvents) {
+            loggedEvents.add(event)
         }
     }
 
     fun setLogFull() {
-        this.loggedEvents = EnumSet.allOf(FSM.FsmEvent::class.java)
+        loggedEvents = EnumSet.allOf(FSM.FsmEvent::class.java)
     }
 
     fun setLogStandard() {
@@ -41,12 +41,12 @@ class LoggedFSM<STATE_ID : Enum<*>, EVENT>(val name: String, states: List<State<
         setLoggedEvents(FSM.FsmEvent.BEFORE_HANDLE_EVENT, FSM.FsmEvent.AFTER_SWITCH_STATE)
     }
 
-    fun setLogHandler(logHandler: LogHandler) {
-        this.logHandler = logHandler
+    fun setLogHandler(handler: LogHandler) {
+        logHandler = handler
     }
 
-    fun removeLogHandler(logHandler: LogHandler) {
-        this.logHandler = null
+    fun removeLogHandler(handler: LogHandler) {
+        logHandler = null
     }
 
     fun getLogMsg(): String {

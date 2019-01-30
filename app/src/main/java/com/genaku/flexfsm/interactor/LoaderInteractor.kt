@@ -1,12 +1,10 @@
 package com.genaku.flexfsm.interactor
 
-import com.genaku.flexfsm.domain.ILoaderInteractor
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderInteractor
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
-@ObsoleteCoroutinesApi
 class LoaderInteractor(private val useCase: ILoaderInteractor) :
     ILoaderInteractor {
 

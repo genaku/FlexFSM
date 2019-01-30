@@ -2,13 +2,14 @@ package com.genaku.flexfsm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.genaku.flexfsm.domain.ILoaderInteractor
-import com.genaku.flexfsm.domain.ILoaderPresenter
-import com.genaku.flexfsm.domain.IRepository
-import com.genaku.flexfsm.domain.LoaderUseCase
+import com.genaku.flexfsm.domain.loader.LoaderUseCase
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderInteractor
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderPresenter
+import com.genaku.flexfsm.domain.loader.interfaces.ILoaderRepository
 import com.genaku.flexfsm.interactor.LoaderInteractor
 
-class LoadingViewModel(repository: IRepository) : ViewModel(), ILoaderPresenter {
+class LoadingViewModel(loaderRepository: ILoaderRepository) : ViewModel(),
+    ILoaderPresenter {
 
     val progressEvent = MutableLiveData<String>()
     val dataEvent = MutableLiveData<String>()
@@ -16,7 +17,7 @@ class LoadingViewModel(repository: IRepository) : ViewModel(), ILoaderPresenter 
 
     private val useCase = LoaderUseCase(
         presenter = this,
-        repository = repository
+        loaderRepository = loaderRepository
     )
 
     val interactor: ILoaderInteractor = LoaderInteractor(useCase)
